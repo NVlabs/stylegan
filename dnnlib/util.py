@@ -1,4 +1,4 @@
-﻿# Copyright (c) 2019, NVIDIA CORPORATION. All rights reserved.
+# Copyright (c) 2019, NVIDIA CORPORATION. All rights reserved.
 #
 # This work is licensed under the Creative Commons Attribution-NonCommercial
 # 4.0 International License. To view a copy of this license, visit
@@ -363,6 +363,7 @@ def open_url(url: str, cache_dir: str = None, num_attempts: int = 10, verbose: b
         for attempts_left in reversed(range(num_attempts)):
             try:
                 with session.get(url) as res:
+                    res.raise_for_status()
                     if len(res.content) == 0:
                         raise IOError("No data received")
 
