@@ -1,4 +1,4 @@
-﻿# Copyright (c) 2019, NVIDIA CORPORATION. All rights reserved.
+# Copyright (c) 2019, NVIDIA CORPORATION. All rights reserved.
 #
 # This work is licensed under the Creative Commons Attribution-NonCommercial
 # 4.0 International License. To view a copy of this license, visit
@@ -60,6 +60,8 @@ def run_all_snapshots(submit_config, metric_args, run_id):
 #----------------------------------------------------------------------------
 
 def main():
+    submit_config = dnnlib.SubmitConfig()
+
     # Which metrics to evaluate?
     metrics = []
     metrics += [metric_base.fid50k]
@@ -84,6 +86,7 @@ def main():
 
     # Execute.
     submit_config.run_dir_root = dnnlib.submission.submit.get_template_from_path(config.result_dir)
+    submit_config.run_dir_ignore += config.run_dir_ignore
     for task in tasks:
         for metric in metrics:
             submit_config.run_desc = '%s-%s' % (task.run_func_name, metric.name)
