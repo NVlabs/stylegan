@@ -228,3 +228,7 @@ Expected evaluation time and results for the pre-trained FFHQ generator using on
 | ls        | 10 hours  | z: 165.0106<br>w: 3.7447 | Linear Separability in *Z* and *W*.
 
 Please note that the exact results may vary from run to run due to the non-deterministic nature of TensorFlow.
+
+## Acknowledgements
+
+We thank Jaakko Lehtinen, David Luebke, and Tuomas Kynk&auml;&auml;nniemi for in-depth discussions and helpful comments; Janne Hellsten, Tero Kuosmanen, and Pekka J&auml;nis for compute infrastructure and help with the code release.
