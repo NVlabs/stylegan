@@ -367,11 +367,15 @@ def open_url(url: str, cache_dir: str = None, num_attempts: int = 10, verbose: b
                     if len(res.content) == 0:
                         raise IOError("No data received")
 
-                    if "download_warning" in res.headers.get("Set-Cookie", "") and len(res.content) < 8192:
-                        links = [html.unescape(link) for link in res.content.decode("utf-8").split('"') if "export=download" in link]
-                        if len(links) == 1:
-                            url = requests.compat.urljoin(url, links[0])
-                            raise IOError("Google Drive virus checker nag")
+                    if len(res.content) < 8192:
+                        content_str = res.content.decode("utf-8")
+                        if "download_warning" in res.headers.get("Set-Cookie", ""):
+                            links = [html.unescape(link) for link in content_str.split('"') if "export=download" in link]
+                            if len(links) == 1:
+                                url = requests.compat.urljoin(url, links[0])
+                                raise IOError("Google Drive virus checker nag")
+                        if "Google Drive - Quota exceeded" in content_str:
+                            raise IOError("Google Drive quota exceeded")
 
                     match = re.search(r'filename="([^"]*)"', res.headers.get("Content-Disposition", ""))
                     url_name = match[1] if match else url
