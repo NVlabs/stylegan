@@ -1,4 +1,4 @@
-﻿# Copyright (c) 2019, NVIDIA CORPORATION. All rights reserved.
+# Copyright (c) 2019, NVIDIA CORPORATION. All rights reserved.
 #
 # This work is licensed under the Creative Commons Attribution-NonCommercial
 # 4.0 International License. To view a copy of this license, visit
@@ -18,7 +18,6 @@ import re
 import shutil
 import time
 import traceback
-import typeguard
 
 import zipfile
 
@@ -63,7 +62,6 @@ class SubmitConfig(util.EasyDict):
         num_gpus: Number of GPUs used/requested for the run.
         print_info: Whether to print debug information when submitting.
         ask_confirmation: Whether to ask a confirmation before submitting.
-        use_typeguard: Whether to use the typeguard module for run-time type checking (slow!).
         run_id: Automatically populated value during submit.
         run_name: Automatically populated value during submit.
         run_dir: Automatically populated value during submit.
@@ -88,7 +86,6 @@ class SubmitConfig(util.EasyDict):
         self.num_gpus = 1
         self.print_info = False
         self.ask_confirmation = False
-        self.use_typeguard = False
 
         # (automatically populated)
         self.run_id = None
@@ -229,10 +226,6 @@ def run_wrapper(submit_config: SubmitConfig) -> None:
     is_local = submit_config.submit_target == SubmitTarget.LOCAL
 
     checker = None
-
-    if submit_config.use_typeguard:
-        checker = typeguard.TypeChecker("dnnlib")
-        checker.start()
 
     # when running locally, redirect stderr to stdout, log stdout to a file, and force flushing
     if is_local:
