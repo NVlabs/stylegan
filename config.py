@@ -10,7 +10,7 @@
 #----------------------------------------------------------------------------
 # Paths.
 
-result_dir = '/artifacts/results'
+result_dir = '/artifacts'
 data_dir = 'datasets'
 cache_dir = 'cache'
 run_dir_ignore = ['results', 'datasets', 'cache']
