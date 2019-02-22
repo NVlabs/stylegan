@@ -1,0 +1,8 @@
+I am training the #stylegan of @Nvidia using around 12000 images of Mars' surface.
+These are the first synthetic images during the training process.
+
+
+These are three sets of synthetic images and a set of real ones, it's hard to distinguish them.
+
+I tried a lot of different GANs, different implementations, parameters tuning, data augmentation. In most (all) cases the models collapsed after several epochs. #stylegan works great almost with no parameters modifications.
+I take my hat off to nvidia's team!
