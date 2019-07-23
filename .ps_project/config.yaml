@@ -1,0 +1,18 @@
+version: 1
+
+
+project: "prsi25rva"
+experiment: "StyleGan_exp" #[optional, default:<repo name>]
+type: "single" #[single|multi-grpc|multi-mpi]
+ports: "5000" #[optional, default:5000]
+
+
+model: #[optional, but required for model parsing and model deployments]
+  type: "Tensorflow" #[required for model, one of: Tensorflow|ONNX|Custom]
+  path: "/storage/models/20190722-154826"
+
+worker:
+  container: "tensorflow/tensorflow:1.9.0-gpu"
+  command: "bash start.sh"
+  machine-type: "P100"
+  count: 1 #[required for multi-node]
