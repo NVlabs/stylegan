@@ -395,14 +395,11 @@ class Network:
                 return util.get_top_level_function_name(obj)
             return obj
         key = repr(unwind_key(key))
-
-        # Build graph.
         if key not in self._run_cache:
             with tfutil.absolute_name_scope(self.scope + "/_Run"), tf.control_dependencies(None):
                 with tf.device("/cpu:0"):
                     in_expr = [tf.placeholder(tf.float32, name=name) for name in self.input_names]
                     in_split = list(zip(*[tf.split(x, num_gpus) for x in in_expr]))
-
                 out_split = []
                 for gpu in range(num_gpus):
                     with tf.device("/gpu:%d" % gpu):
@@ -424,12 +421,9 @@ class Network:
 
                         assert len(out_gpu) == self.num_outputs
                         out_split.append(out_gpu)
-
                 with tf.device("/cpu:0"):
                     out_expr = [tf.concat(outputs, axis=0) for outputs in zip(*out_split)]
                     self._run_cache[key] = in_expr, out_expr
-
-        # Run minibatches.
         in_expr, out_expr = self._run_cache[key]
         out_arrays = [np.empty([num_items] + tfutil.shape_to_list(expr.shape)[1:], expr.dtype.name) for expr in out_expr]
 
