@@ -13,6 +13,11 @@ model: #[optional, but required for model parsing and model deployments]
 
 worker:
   container: "tensorflow/tensorflow:latest-gpu-jupyter"
-  command: "bash start.sh"
+  command: "ls"
   machine-type: "P100"
   count: 1 #[required for multi-node]
+
+checks: #[optional]
+  tensorflow:loss:
+    target: 0.0..0.5
+    aggregate: "mean"
