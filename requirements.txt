@@ -1,0 +1,3 @@
+numpy==1.16.1
+Pillow==5.4.1
+requests==2.21.0
