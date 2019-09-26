@@ -1,28 +1,17 @@
-FROM tensorflow/tensorflow:latest-devel-gpu-py3
-LABEL Author="Or Fleisher <https://orfleisher.com>"
-LABEL Title="Stylegan Dockerfile"
-
-# Add the user's bin to the path
-ENV PATH "$PATH:/root/.local/bin"
-
-# This fixes some locale issues (see http://jaredmarkell.com/docker-and-locales/)
-ENV LC_ALL C.UTF-8 \
-    LANG C.UTF-8
-
-# Install all the other things we would need
-RUN apt-get update && apt-get install -y \ 
-    pkg-config \
-    python-dev \ 
-    libopencv-dev \ 
-    libav-tools  \ 
-    libjpeg-dev \ 
-    libpng-dev \ 
-    libtiff-dev \ 
-    libjasper-dev \
-    wget
+# First install the CUDA 9.2 Docker Image
+FROM    tensorflow/tensorflow:latest-gpu-py3
+LABEL   Author="Or Fleisher <https://orfleisher.com>"
+LABEL   Title="Stylegan Dockerfile"
 
 WORKDIR /
-COPY requirements.txt .
+ENV     PATH="/root/.local/bin:${PATH}"
+
+RUN     apt-get -yqq update && \
+        apt-get install -yq --no-install-recommends ca-certificates expat libgomp1 && \
+        apt-get autoremove -y && \
+        apt-get clean -y
+
+COPY    requirements.txt .
 
 # Install the python dependencies
-RUN pip3 install --user -r requirements.txt
+RUN     pip3 install --user -r requirements.txt
