@@ -550,7 +550,7 @@ def G_synthesis(
         def grow(x, res, lod):
             y = block(res, x)
             img = lambda: upscale2d(torgb(res, y), 2**lod)
-            img = cset(img, (lod_in > lod), lambda: upscale2d(tflib.lerp(torgb(res, y), upscale2d(torgb(res - 1, x)), lod_in - lod), 2**lod))
+            img = cset(img, (lod_in > lod), lambda: upscale2d(tflib.lerp_clip(torgb(res, y), upscale2d(torgb(res - 1, x)), lod_in - lod), 2**lod))
             if lod > 0: img = cset(img, (lod_in < lod), lambda: grow(y, res + 1, lod - 1))
             return img()
         images_out = grow(x, 3, resolution_log2 - 3)
