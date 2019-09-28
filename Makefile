@@ -11,4 +11,4 @@ example:
 	docker run --gpus all -w /data --rm -it -v `pwd`:/data -t $(tag_name) python3 pretrained_example.py
 
 jupyter:
-	docker run --gpus all -p 8888:8888 -w /data --rm -it -v `pwd`:/data -t juniorxsound/exit-stereo-metadata:latest jupyter notebook --allow-root \
+	docker run --gpus all -p 8888:8888 -w /data --rm -it -v `pwd`:/data -t $(tag_name) jupyter notebook --allow-root \
