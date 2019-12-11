@@ -159,6 +159,8 @@ def training_loop(
             if resume_run_id == 'latest':
                 try:
                     network_pkl, resume_kimg = misc.locate_latest_pkl()
+                    print('Loading networks from "%s"...' % network_pkl)
+                    G, D, Gs = misc.load_pkl(network_pkl)
                 except:
                     print('Constructing networks...')
                     G = tflib.Network('G', num_channels=training_set.shape[0], resolution=training_set.shape[1], label_size=training_set.label_size, **G_args)
@@ -166,8 +168,8 @@ def training_loop(
                     Gs = G.clone('Gs')
             else:
                 network_pkl = misc.locate_network_pkl(resume_run_id, resume_snapshot)
-            print('Loading networks from "%s"...' % network_pkl)
-            G, D, Gs = misc.load_pkl(network_pkl)
+                print('Loading networks from "%s"...' % network_pkl)
+                G, D, Gs = misc.load_pkl(network_pkl)
         else:
             print('Constructing networks...')
             G = tflib.Network('G', num_channels=training_set.shape[0], resolution=training_set.shape[1], label_size=training_set.label_size, **G_args)
