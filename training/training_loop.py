@@ -154,7 +154,12 @@ def training_loop(
     # Construct networks.
     with tf.device('/gpu:0'):
         if resume_run_id is not None:
-            network_pkl = misc.locate_network_pkl(resume_run_id, resume_snapshot)
+            ## Changed this, which is nshepperds patch to
+            ## restart from the most recent snapshot
+            if resume_run_id == 'latest':
+                network_pkl, resume_kimg = misc.locate_latest_pkl()
+            else:
+                network_pkl = misc.locate_network_pkl(resume_run_id, resume_snapshot)
             print('Loading networks from "%s"...' % network_pkl)
             G, D, Gs = misc.load_pkl(network_pkl)
         else:
@@ -267,7 +272,9 @@ def training_loop(
             if cur_tick % network_snapshot_ticks == 0 or done or cur_tick == 1:
                 pkl = os.path.join(submit_config.run_dir, 'network-snapshot-%06d.pkl' % (cur_nimg // 1000))
                 misc.save_pkl((G, D, Gs), pkl)
-                metrics.run(pkl, run_dir=submit_config.run_dir, num_gpus=submit_config.num_gpus, tf_config=tf_config)
+                ## Commented this out to skip
+                ## the FID metrics
+                #metrics.run(pkl, run_dir=submit_config.run_dir, num_gpus=submit_config.num_gpus, tf_config=tf_config)
 
             # Update summaries and RunContext.
             metrics.update_autosummaries()
