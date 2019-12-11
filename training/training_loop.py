@@ -109,6 +109,8 @@ def training_schedule(
 #----------------------------------------------------------------------------
 # Main training script.
 
+##### THIS IS WHERE THE CUSTOM EDITS ARE ######
+
 def training_loop(
     submit_config,
     G_args                  = {},       # Options for generator network.
@@ -122,9 +124,12 @@ def training_loop(
     grid_args               = {},       # Options for train.setup_snapshot_image_grid().
     metric_arg_list         = [],       # Options for MetricGroup.
     tf_config               = {},       # Options for tflib.init_tf().
+    ## These two affect the training dynamics
     G_smoothing_kimg        = 10.0,     # Half-life of the running average of generator weights.
     D_repeats               = 1,        # How many times the discriminator is trained per G iteration.
-    minibatch_repeats       = 4,        # Number of minibatches to run before adjusting training parameters.
+
+    # Changed this (minibathc_repeats) from 4 to 1 due to Gwern's reccomendation
+    minibatch_repeats       = 1,        # Number of minibatches to run before adjusting training parameters.
     reset_opt_for_new_lod   = True,     # Reset optimizer internal state (e.g. Adam moments) when new layers are introduced?
     total_kimg              = 15000,    # Total length of the training, measured in thousands of real images.
     mirror_augment          = False,    # Enable mirror augment?
@@ -133,8 +138,9 @@ def training_loop(
     network_snapshot_ticks  = 10,       # How often to export network snapshots?
     save_tf_graph           = False,    # Include full TensorFlow computation graph in the tfevents file?
     save_weight_histograms  = False,    # Include weight histograms in the tfevents file?
-    resume_run_id           = None,     # Run ID or network pkl to resume training from, None = start from scratch.
+    resume_run_id           = "latest",     # Run ID or network pkl to resume training from, None = start from scratch.
     resume_snapshot         = None,     # Snapshot index to resume training from, None = autodetect.
+    ## Set to 10000 or something for transfer learning (so it begins at highest possible part of training)
     resume_kimg             = 0.0,      # Assumed training progress at the beginning. Affects reporting and training schedule.
     resume_time             = 0.0):     # Assumed wallclock time at the beginning. Affects reporting.
 
