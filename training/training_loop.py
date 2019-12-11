@@ -157,7 +157,13 @@ def training_loop(
             ## Changed this, which is nshepperds patch to
             ## restart from the most recent snapshot
             if resume_run_id == 'latest':
-                network_pkl, resume_kimg = misc.locate_latest_pkl()
+                try:
+                    network_pkl, resume_kimg = misc.locate_latest_pkl()
+                except:
+                    print('Constructing networks...')
+                    G = tflib.Network('G', num_channels=training_set.shape[0], resolution=training_set.shape[1], label_size=training_set.label_size, **G_args)
+                    D = tflib.Network('D', num_channels=training_set.shape[0], resolution=training_set.shape[1], label_size=training_set.label_size, **D_args)
+                    Gs = G.clone('Gs')
             else:
                 network_pkl = misc.locate_network_pkl(resume_run_id, resume_snapshot)
             print('Loading networks from "%s"...' % network_pkl)
