@@ -506,6 +506,8 @@ def create_from_images(tfrecord_dir, image_dir, shuffle):
     if len(image_filenames) == 0:
         error('No input images found')
 
+    # Added the below line on reccomendation from Gwern
+    print(image_filenames[order[idx]])
     img = np.asarray(PIL.Image.open(image_filenames[0]))
     resolution = img.shape[0]
     channels = img.shape[2] if img.ndim == 3 else 1
