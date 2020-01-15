@@ -1,0 +1,4 @@
+numpy==1.14.1
+Pillow
+requests
+tensorflow-gpu==1.10.0
