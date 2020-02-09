@@ -33,7 +33,7 @@ if 1:
     submit_config = dnnlib.SubmitConfig()                                                  # Options for dnnlib.submit_run().
     tf_config     = {'rnd.np_random_seed': 1000}                                           # Options for tflib.init_tf().
 
-    # Dataset.
+    # Dataset.-
     desc += '-ffhq';     dataset = EasyDict(tfrecord_dir='ffhq');                 train.mirror_augment = True
     desc += '-mars';     dataset = EasyDict(tfrecord_dir='mars');                 train.mirror_augment = False
     #desc += '-ffhq512';  dataset = EasyDict(tfrecord_dir='ffhq', resolution=512); train.mirror_augment = True
