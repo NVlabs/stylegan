@@ -16,7 +16,7 @@ $ sudo apt-get update
 $ sudo apt-get install nvidia-384 nvidia-modprobe
 $ sudo apt-get update
 ```
-After executing above commands, you can check weather the installation is complete or not with the command `nvidia-smi`. If the installation is complete then it will show the table corresponding to particular NVIDIA Driver.
+After executing above commands, you can check whether the installation is complete or not with the command `nvidia-smi`. If the installation is complete then it will show the table corresponding to particular NVIDIA Driver.
 
 ## Installing CUDA-9.0
 Installing CUDA from runfile is actually a breeze, compared to apt-get which involves adding NVIDIA repos and messing up your configuration.
