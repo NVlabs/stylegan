@@ -7,7 +7,7 @@ print("data type of result:",type(result))
 
 print("\n\nThis is the result:",result)
 
-with open("/drive/My Drive/Colab_folder/stylegan/stylegan_pretrained_nividia.pkl") as f:
+with open("/drive/My Drive/Colab_folder/stylegan/stylegan_pretrained_nividia.pkl", 'rb') as f:
   datums = pickle.load(f)
 
 print("type of data:",type(datums))
