@@ -25,7 +25,7 @@ def main():
     with open(url, "rb") as f:
         for _ in range(pickle.load(f)):
             data2.append(pickle.load(f))
-    print data2
+    print(data2)
 
     with dnnlib.util.open_url(url, cache_dir=config.cache_dir) as f:
         _G, _D, Gs = pickle.load(f, encoding="latin1")
