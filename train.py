@@ -37,7 +37,7 @@ if True:
     # desc += '-ffhq';     dataset = EasyDict(tfrecord_dir='ffhq');                 train.mirror_augment = True
     #desc += '-ffhq512';  dataset = EasyDict(tfrecord_dir='ffhq', resolution=512); train.mirror_augment = True
     #desc += '-ffhq256';  dataset = EasyDict(tfrecord_dir='ffhq', resolution=256); train.mirror_augment = True
-    desc += '-celebahq'; dataset = EasyDict(tfrecord_dir='/projects/grail/jpgard/celeba-hq/dat');             train.mirror_augment = True
+    desc += '-celebahq'; dataset = EasyDict(tfrecord_dir='/projects/grail/jpgard/celeba-hq/tfrecord_dir');             train.mirror_augment = True
     #desc += '-bedroom';  dataset = EasyDict(tfrecord_dir='lsun-bedroom-full');    train.mirror_augment = False
     #desc += '-car';      dataset = EasyDict(tfrecord_dir='lsun-car-512x384');     train.mirror_augment = False
     #desc += '-cat';      dataset = EasyDict(tfrecord_dir='lsun-cat-full');        train.mirror_augment = False
@@ -98,7 +98,7 @@ if False:
     tf_config     = {'rnd.np_random_seed': 1000}                                   # Options for tflib.init_tf().
 
     # Dataset (choose one).
-    desc += '-celebahq';            dataset = EasyDict(tfrecord_dir='/projects/grail/jpgard/celeba-hq/dat'); train.mirror_augment = True
+    desc += '-celebahq';            dataset = EasyDict(tfrecord_dir='/projects/grail/jpgard/celeba-hq/tfrecord_dir'); train.mirror_augment = True
     #desc += '-celeba';              dataset = EasyDict(tfrecord_dir='celeba'); train.mirror_augment = True
     #desc += '-cifar10';             dataset = EasyDict(tfrecord_dir='cifar10')
     #desc += '-cifar100';            dataset = EasyDict(tfrecord_dir='cifar100')
