@@ -46,7 +46,7 @@ try :
 
 
     print("Image source directory : ",os.path.join(os.getcwd(),image_dir))
-    print("Saving PRocessed images in  : ",os.path.join(os.getcwd()),save_dir)
+    print("Saving processed images in  : ",os.path.join(os.getcwd()),save_dir)
     print(f"Resized image shape : ({image_shape},{image_shape},{3})")
 except IndexError as error:
     print("Error")
