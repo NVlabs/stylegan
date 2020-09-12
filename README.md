@@ -189,7 +189,12 @@ To obtain other datasets, including LSUN, please consult their corresponding pro
 > python dataset_tool.py create_cifar10 datasets/cifar10 ~/cifar10
 > python dataset_tool.py create_from_images datasets/custom-dataset ~/custom-images
 ```
+## Resizing images to be of uniform size
+The stylegan model requires all images in the dataset to be of uniform size , when using a custom dataset this may cause a frequent error because all the images in the dataset may not be of the same shape. To resize all images in your dataset to be of uniform shape execute the below command in your terminal or console. The arguments needed to be passed are , image_dataset_directory ,  image save directory  , image_size. The image size should be a single integer such as 128,256,512 and in addition the number of channels are by default set to 3.
 
+```
+> python preprocess_image.py image_dataset_directory/  resized_image_save_directory/ 256
+```
 ## Training networks
 
 Once the datasets are set up, you can train your own StyleGAN networks as follows:
