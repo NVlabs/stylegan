@@ -10,6 +10,7 @@
 import os
 import numpy as np
 import tensorflow as tf
+tf.compat.v1.enable_eager_execution()
 
 from typing import Any, Iterable, List, Union
 
