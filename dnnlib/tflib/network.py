@@ -399,7 +399,7 @@ class Network:
         # Build graph.
         if key not in self._run_cache:
             with tfutil.absolute_name_scope(self.scope + "/_Run"), tf.control_dependencies(None):
-                with tf.device("/cpu:0"):
+                with tf.device("/GPU:0"):
                     in_expr = [tf.placeholder(tf.float32, name=name) for name in self.input_names]
                     in_split = list(zip(*[tf.split(x, num_gpus) for x in in_expr]))
 
@@ -425,7 +425,7 @@ class Network:
                         assert len(out_gpu) == self.num_outputs
                         out_split.append(out_gpu)
 
-                with tf.device("/cpu:0"):
+                with tf.device("/GPU:0"):
                     out_expr = [tf.concat(outputs, axis=0) for outputs in zip(*out_split)]
                     self._run_cache[key] = in_expr, out_expr
 
