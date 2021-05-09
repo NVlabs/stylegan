@@ -134,8 +134,8 @@ def training_loop(
     network_snapshot_ticks  = 10,       # How often to export network snapshots?
     save_tf_graph           = False,    # Include full TensorFlow computation graph in the tfevents file?
     save_weight_histograms  = False,    # Include weight histograms in the tfevents file?
-    resume_run_id           = None,     # Run ID or network pkl to resume training from, None = start from scratch.
-    resume_snapshot         = None,     # Snapshot index to resume training from, None = autodetect.
+    resume_run_id           = 1,        # Run ID or network pkl to resume training from, None = start from scratch.
+    resume_snapshot         = 140,     # Snapshot index to resume training from, None = autodetect.
     resume_kimg             = 0.0,      # Assumed training progress at the beginning. Affects reporting and training schedule.
     resume_time             = 0.0):     # Assumed wallclock time at the beginning. Affects reporting.
 
@@ -149,7 +149,8 @@ def training_loop(
     # Construct networks.
     with tf.device('/gpu:0'):
         if resume_run_id is not None:
-            network_pkl = misc.locate_network_pkl(resume_run_id, resume_snapshot)
+            network_pkl = os.path.join("results/00028-sgan-ffhq256", 'network-snapshot-000140.pkl')
+            # network_pkl = misc.locate_network_pkl(resume_run_id, resume_snapshot)
             print('Loading networks from "%s"...' % network_pkl)
             G, D, Gs = misc.load_pkl(network_pkl)
         else:
@@ -189,13 +190,17 @@ def training_loop(
     with tf.device('/gpu:0'):
         try:
             peak_gpu_mem_op = tf.contrib.memory_stats.MaxBytesInUse()
-        except tf.errors.NotFoundError:
+        except Exception:
             peak_gpu_mem_op = tf.constant(0)
 
     print('Setting up snapshot image grid...')
     grid_size, grid_reals, grid_labels, grid_latents = misc.setup_snapshot_image_grid(G, training_set, **grid_args)
     sched = training_schedule(cur_nimg=total_kimg*1000, training_set=training_set, num_gpus=submit_config.num_gpus, **sched_args)
     grid_fakes = Gs.run(grid_latents, grid_labels, is_validation=True, minibatch_size=sched.minibatch//submit_config.num_gpus)
+    print(grid_size)
+    print(grid_fakes.shape)
+    for i in range(20):
+        misc.save_image(grid_fakes[1,0,:,:], os.path.join(submit_config.run_dir, 'fake-image-%d.png' % i), drange=drange_net)
 
     print('Setting up run dir...')
     misc.save_image_grid(grid_reals, os.path.join(submit_config.run_dir, 'reals.png'), drange=training_set.dynamic_range, grid_size=grid_size)
@@ -257,16 +262,21 @@ def training_loop(
 
             # Save snapshots.
             if cur_tick % image_snapshot_ticks == 0 or done:
-                grid_fakes = Gs.run(grid_latents, grid_labels, is_validation=True, minibatch_size=sched.minibatch//submit_config.num_gpus)
-                misc.save_image_grid(grid_fakes, os.path.join(submit_config.run_dir, 'fakes%06d.png' % (cur_nimg // 1000)), drange=drange_net, grid_size=grid_size)
+                for i in range(20):
+                    grid_fakes = Gs.run(grid_latents, grid_labels, is_validation=True, minibatch_size=sched.minibatch//submit_config.num_gpus)
+                    # grid_fakes = Gs.run(latents, None, truncation_psi=0.7, randomize_noise=True, output_transform=fmt)
+                    print(np.reshape(grid_fakes, 256))
+
+                    # np.savetxt('image-%d-%06d' % (i, cur_nimg // 1000), grid_fakes, delimiter=",")
+                    misc.save_image(grid_fakes, os.path.join(submit_config.run_dir, 'fakes-%d-%06d.png' % (i, cur_nimg // 1000)))
             if cur_tick % network_snapshot_ticks == 0 or done or cur_tick == 1:
                 pkl = os.path.join(submit_config.run_dir, 'network-snapshot-%06d.pkl' % (cur_nimg // 1000))
                 misc.save_pkl((G, D, Gs), pkl)
-                metrics.run(pkl, run_dir=submit_config.run_dir, num_gpus=submit_config.num_gpus, tf_config=tf_config)
+               #metrics.run(pkl, run_dir=submit_config.run_dir, num_gpus=submit_config.num_gpus, tf_config=tf_config)
 
             # Update summaries and RunContext.
             metrics.update_autosummaries()
-            tflib.autosummary.save_summaries(summary_log, cur_nimg)
+            #tflib.autosummary.save_summaries(summary_log, cur_nimg)
             ctx.update('%.2f' % sched.lod, cur_epoch=cur_nimg // 1000, max_epoch=total_kimg)
             maintenance_time = ctx.get_last_update_interval() - tick_time
 

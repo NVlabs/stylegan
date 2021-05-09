@@ -40,7 +40,7 @@ class Optimizer:
 
     def __init__(self,
                  name: str = "Train",
-                 tf_optimizer: str = "tf.train.AdamOptimizer",
+                 tf_optimizer: str = "tf.compat.v1.train.AdamOptimizer",
                  learning_rate: TfExpressionEx = 0.001,
                  use_loss_scaling: bool = False,
                  loss_scaling_init: float = 64.0,

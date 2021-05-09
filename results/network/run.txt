@@ -1,0 +1,1 @@
+{'host_name': 'localhost', 'start_time': '2021-05-05 09:31:08.042069', 'task_name': 'fuzz-00050-sgan-ffhq256'}
