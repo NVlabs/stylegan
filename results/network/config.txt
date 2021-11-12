@@ -1,0 +1,13 @@
+{   'D': {'func_name': 'training.networks_stylegan.D_basic'},
+    'D_loss': {'func_name': 'training.loss.D_logistic_simplegp', 'r1_gamma': 10.0},
+    'D_opt': {'beta1': 0.0, 'beta2': 0.99, 'epsilon': 1e-08},
+    'G': {'func_name': 'training.networks_stylegan.G_style'},
+    'G_loss': {'func_name': 'training.loss.G_logistic_nonsaturating'},
+    'G_opt': {'beta1': 0.0, 'beta2': 0.99, 'epsilon': 1e-08},
+    'dataset': {'resolution': 16, 'tfrecord_dir': 'datasets/custom-dataset'},
+    'desc': 'sgan-ffhq256',
+    'grid': {'layout': 'random', 'size': '1080p'},
+    'metrics': [{'func_name': 'metrics.frechet_inception_distance.FID', 'minibatch_per_gpu': 8, 'name': 'fid50k', 'num_images': 50000}],
+    'sched': {'D_lrate_dict': {128: 0.0015, 256: 0.002, 512: 0.003, 1024: 0.003}, 'G_lrate_dict': {128: 0.0015, 256: 0.002, 512: 0.003, 1024: 0.003}, 'lod_initial_resolution': 8},
+    'tf_config': {'rnd.np_random_seed': 1000},
+    'train': {'mirror_augment': True, 'run_func_name': 'training.training_loop.training_loop', 'total_kimg': 25000}}

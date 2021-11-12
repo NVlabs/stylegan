@@ -1,0 +1,114 @@
+dnnlib: Running training.training_loop.training_loop() on localhost...
+Streaming data using training.dataset.TFRecordDataset...
+datasets/datasets/custom-dataset
+Dataset shape = [1, 16, 16]
+Dynamic range = [0, 255]
+Label size    = 0
+Loading networks from "results/00028-sgan-ffhq256/network-snapshot-000140.pkl"...
+
+G                           Params    OutputShape       WeightShape     
+---                         ---       ---               ---             
+latents_in                  -         (?, 512)          -               
+labels_in                   -         (?, 0)            -               
+lod                         -         ()                -               
+dlatent_avg                 -         (512,)            -               
+G_mapping/latents_in        -         (?, 512)          -               
+G_mapping/labels_in         -         (?, 0)            -               
+G_mapping/PixelNorm         -         (?, 512)          -               
+G_mapping/Dense0            262656    (?, 512)          (512, 512)      
+G_mapping/Dense1            262656    (?, 512)          (512, 512)      
+G_mapping/Dense2            262656    (?, 512)          (512, 512)      
+G_mapping/Dense3            262656    (?, 512)          (512, 512)      
+G_mapping/Dense4            262656    (?, 512)          (512, 512)      
+G_mapping/Dense5            262656    (?, 512)          (512, 512)      
+G_mapping/Dense6            262656    (?, 512)          (512, 512)      
+G_mapping/Dense7            262656    (?, 512)          (512, 512)      
+G_mapping/Broadcast         -         (?, 6, 512)       -               
+G_mapping/dlatents_out      -         (?, 6, 512)       -               
+Truncation                  -         (?, 6, 512)       -               
+G_synthesis/dlatents_in     -         (?, 6, 512)       -               
+G_synthesis/4x4/Const       534528    (?, 512, 4, 4)    (512,)          
+G_synthesis/4x4/Conv        2885632   (?, 512, 4, 4)    (3, 3, 512, 512)
+G_synthesis/ToRGB_lod2      513       (?, 1, 4, 4)      (1, 1, 512, 1)  
+G_synthesis/8x8/Conv0_up    2885632   (?, 512, 8, 8)    (3, 3, 512, 512)
+G_synthesis/8x8/Conv1       2885632   (?, 512, 8, 8)    (3, 3, 512, 512)
+G_synthesis/ToRGB_lod1      513       (?, 1, 8, 8)      (1, 1, 512, 1)  
+G_synthesis/Upscale2D       -         (?, 1, 8, 8)      -               
+G_synthesis/Grow_lod1       -         (?, 1, 8, 8)      -               
+G_synthesis/16x16/Conv0_up  2885632   (?, 512, 16, 16)  (3, 3, 512, 512)
+G_synthesis/16x16/Conv1     2885632   (?, 512, 16, 16)  (3, 3, 512, 512)
+G_synthesis/ToRGB_lod0      513       (?, 1, 16, 16)    (1, 1, 512, 1)  
+G_synthesis/Upscale2D_1     -         (?, 1, 16, 16)    -               
+G_synthesis/Grow_lod0       -         (?, 1, 16, 16)    -               
+G_synthesis/images_out      -         (?, 1, 16, 16)    -               
+G_synthesis/lod             -         ()                -               
+G_synthesis/noise0          -         (1, 1, 4, 4)      -               
+G_synthesis/noise1          -         (1, 1, 4, 4)      -               
+G_synthesis/noise2          -         (1, 1, 8, 8)      -               
+G_synthesis/noise3          -         (1, 1, 8, 8)      -               
+G_synthesis/noise4          -         (1, 1, 16, 16)    -               
+G_synthesis/noise5          -         (1, 1, 16, 16)    -               
+images_out                  -         (?, 1, 16, 16)    -               
+---                         ---       ---               ---             
+Total                       17065475                                    
+
+
+D                    Params    OutputShape       WeightShape     
+---                  ---       ---               ---             
+images_in            -         (?, 1, 16, 16)    -               
+labels_in            -         (?, 0)            -               
+lod                  -         ()                -               
+FromRGB_lod0         1024      (?, 512, 16, 16)  (1, 1, 1, 512)  
+16x16/Conv0          2359808   (?, 512, 16, 16)  (3, 3, 512, 512)
+16x16/Conv1_down     2359808   (?, 512, 8, 8)    (3, 3, 512, 512)
+Downscale2D          -         (?, 1, 8, 8)      -               
+FromRGB_lod1         1024      (?, 512, 8, 8)    (1, 1, 1, 512)  
+Grow_lod0            -         (?, 512, 8, 8)    -               
+8x8/Conv0            2359808   (?, 512, 8, 8)    (3, 3, 512, 512)
+8x8/Conv1_down       2359808   (?, 512, 4, 4)    (3, 3, 512, 512)
+Downscale2D_1        -         (?, 1, 4, 4)      -               
+FromRGB_lod2         1024      (?, 512, 4, 4)    (1, 1, 1, 512)  
+Grow_lod1            -         (?, 512, 4, 4)    -               
+4x4/MinibatchStddev  -         (?, 513, 4, 4)    -               
+4x4/Conv             2364416   (?, 512, 4, 4)    (3, 3, 513, 512)
+4x4/Dense0           4194816   (?, 512)          (8192, 512)     
+4x4/Dense1           513       (?, 1)            (512, 1)        
+scores_out           -         (?, 1)            -               
+---                  ---       ---               ---             
+Total                16002049                                    
+
+Building TensorFlow graph...
+Setting up snapshot image grid...
+(32, 32)
+(1024, 1, 16, 16)
+Setting up run dir...
+Training...
+
+Traceback (most recent call last):
+  File "train.py", line 190, in <module>
+    main()
+  File "train.py", line 185, in main
+    dnnlib.submit_run(**kwargs)
+  File "/home/fuzz/Downloads/stylegan/dnnlib/submission/submit.py", line 290, in submit_run
+    run_wrapper(submit_config)
+  File "/home/fuzz/Downloads/stylegan/dnnlib/submission/submit.py", line 242, in run_wrapper
+    util.call_func_by_name(func_name=submit_config.run_func_name, submit_config=submit_config, **submit_config.run_func_kwargs)
+  File "/home/fuzz/Downloads/stylegan/dnnlib/util.py", line 257, in call_func_by_name
+    return func_obj(*args, **kwargs)
+  File "/home/fuzz/Downloads/stylegan/training/training_loop.py", line 238, in training_loop
+    tflib.run([G_train_op], {lod_in: sched.lod, lrate_in: sched.G_lrate, minibatch_in: sched.minibatch})
+  File "/home/fuzz/Downloads/stylegan/dnnlib/tflib/tfutil.py", line 27, in run
+    return tf.get_default_session().run(*args, **kwargs)
+  File "/home/fuzz/.env3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 957, in run
+    result = self._run(None, fetches, feed_dict, options_ptr,
+  File "/home/fuzz/.env3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1180, in _run
+    results = self._do_run(handle, final_targets, final_fetches,
+  File "/home/fuzz/.env3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1358, in _do_run
+    return self._do_call(_run_fn, feeds, fetches, targets, options,
+  File "/home/fuzz/.env3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1365, in _do_call
+    return fn(*args)
+  File "/home/fuzz/.env3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1349, in _run_fn
+    return self._call_tf_sessionrun(options, feed_dict, fetch_list,
+  File "/home/fuzz/.env3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1441, in _call_tf_sessionrun
+    return tf_session.TF_SessionRun_wrapper(self._session, options, feed_dict,
+KeyboardInterrupt

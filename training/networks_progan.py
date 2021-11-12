@@ -8,7 +8,8 @@
 """Network architectures used in the ProGAN paper."""
 
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 # NOTE: Do not import any application-specific modules here!
 # Specify all network parameters as kwargs.

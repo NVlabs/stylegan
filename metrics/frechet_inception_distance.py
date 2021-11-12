@@ -9,8 +9,10 @@
 
 import os
 import numpy as np
+import pickle
 import scipy
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import dnnlib.tflib as tflib
 
 from metrics import metric_base
@@ -26,7 +28,9 @@ class FID(metric_base.MetricBase):
 
     def _evaluate(self, Gs, num_gpus):
         minibatch_size = num_gpus * self.minibatch_per_gpu
-        inception = misc.load_pkl('https://drive.google.com/uc?id=1MzTY44rLToO5APn8TZmfR7_ENSe5aZUn') # inception_v3_features.pkl
+        # inception = misc.load_pkl('https://drive.google.com/file/d/1UFvPYshotkUnqcVgy50DZn5IzJ95ubkx/') # inception_v3_features.pkl
+        with open("inception_v3_features.pkl", 'rb') as file:
+            inception = pickle.load(file, encoding='latin1')
         activations = np.empty([self.num_images, inception.output_shape[1]], dtype=np.float32)
 
         # Calculate statistics for reals.

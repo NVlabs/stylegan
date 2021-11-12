@@ -70,10 +70,13 @@ def convert_to_pil_image(image, drange=[0,1]):
             image = image[0] # grayscale CHW => HW
         else:
             image = image.transpose(1, 2, 0) # CHW -> HWC
-
+    # print("Image dim are: ", image.shape)
     image = adjust_dynamic_range(image, drange, [0,255])
+    # print("Image dim are: ", image.shape)
     image = np.rint(image).clip(0, 255).astype(np.uint8)
     fmt = 'RGB' if image.ndim == 3 else 'L'
+    # print("Image dim are: ", image.shape)
+    np.savetxt("image-csv.csv", image, delimiter=",")
     return PIL.Image.fromarray(image, fmt)
 
 def save_image(image, filename, drange=[0,1], quality=95):

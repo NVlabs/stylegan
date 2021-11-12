@@ -16,7 +16,8 @@ import threading
 import six.moves.queue as Queue # pylint: disable=import-error
 import traceback
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import PIL.Image
 import dnnlib.tflib as tflib
 
@@ -500,13 +501,42 @@ def create_celeba(tfrecord_dir, celeba_dir, cx=89, cy=121):
 
 #----------------------------------------------------------------------------
 
+import pandas as pd
+from sklearn import preprocessing
+from ipaddress import ip_address
+
+def myfunc(img):
+    return np.reshape(img, (-1, 16))
+
 def create_from_images(tfrecord_dir, image_dir, shuffle):
-    print('Loading images from "%s"' % image_dir)
+    print('Loading csv from "%s"' % image_dir)
     image_filenames = sorted(glob.glob(os.path.join(image_dir, '*')))
     if len(image_filenames) == 0:
-        error('No input images found')
+        error('No input csv found')
+    csvs = []
+    for f in image_filenames:
+        df = pd.read_csv(f)
+        df = df.drop(df.columns[0], axis=1)
+        try:
+            df['src'] = df['src'].apply(lambda x: int(ip_address(x)))
+            df['dst'] = df['dst'].apply(lambda x: int(ip_address(x)))
+        except: pass
+        df = df.fillna(0)
+        scaler = preprocessing.MinMaxScaler((0, 255))
+        scaler.fit(df)
+        df = scaler.transform(df)
+        csvs.append(df)
 
-    img = np.asarray(PIL.Image.open(image_filenames[0]))
+    img = np.concatenate((csvs[0], csvs[1], csvs[2]), axis=1)
+    # print(img.shape)
+
+    # img = np.reshape(img, (-1, 2))
+    data = np.apply_along_axis(myfunc, axis=1, arr=img)
+    # print(data.shape)
+
+    img = data[0]
+    print(img.shape)
+    
     resolution = img.shape[0]
     channels = img.shape[2] if img.ndim == 3 else 1
     if img.shape[1] != resolution:
@@ -517,9 +547,9 @@ def create_from_images(tfrecord_dir, image_dir, shuffle):
         error('Input images must be stored as RGB or grayscale')
 
     with TFRecordExporter(tfrecord_dir, len(image_filenames)) as tfr:
-        order = tfr.choose_shuffled_order() if shuffle else np.arange(len(image_filenames))
-        for idx in range(order.size):
-            img = np.asarray(PIL.Image.open(image_filenames[order[idx]]))
+        # order = tfr.choose_shuffled_order() if shuffle else np.arange(len(image_filenames))
+        for img in data:
+            # img = np.asarray(PIL.Image.open(image_filenames[order[idx]]))
             if channels == 1:
                 img = img[np.newaxis, :, :] # HW => CHW
             else:
