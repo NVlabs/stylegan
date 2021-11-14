@@ -3,7 +3,7 @@
 ![TensorFlow 1.10](https://img.shields.io/badge/tensorflow-1.10-green.svg?style=plastic)
 ![cuDNN 7.3.1](https://img.shields.io/badge/cudnn-7.3.1-green.svg?style=plastic)
 ![License CC BY-NC](https://img.shields.io/badge/license-CC_BY--NC-green.svg?style=plastic)
-
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NVlabs/stylegan/blob/master/StyleGAN_Train.ipynb)
 ![Teaser image](./stylegan-teaser.png)
 **Picture:** *These people are not real &ndash; they were produced by our generator that allows control over different aspects of the image.*
 
