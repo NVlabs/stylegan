@@ -1,0 +1,17 @@
+# First install the CUDA 9.2 Docker Image
+FROM    tensorflow/tensorflow:latest-gpu-py3
+LABEL   Author="Or Fleisher <https://orfleisher.com>"
+LABEL   Title="Stylegan Dockerfile"
+
+WORKDIR /
+ENV     PATH="/root/.local/bin:${PATH}"
+
+RUN     apt-get -yqq update && \
+        apt-get install -yq --no-install-recommends ca-certificates expat libgomp1 && \
+        apt-get autoremove -y && \
+        apt-get clean -y
+
+COPY    requirements.txt .
+
+# Install the python dependencies
+RUN     pip3 install --user -r requirements.txt
