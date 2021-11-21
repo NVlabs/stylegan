@@ -350,7 +350,7 @@ def open_url(url: str, cache_dir: str = None, num_attempts: int = 10, verbose: b
     # Lookup from cache.
     url_md5 = hashlib.md5(url.encode("utf-8")).hexdigest()
     if cache_dir is not None:
-        cache_files = glob.glob(os.path.join(cache_dir, url_md5 + "_*"))
+        cache_files = glob.glob(os.path.join(cache_dir, "*.pkl"))
         if len(cache_files) == 1:
             return open(cache_files[0], "rb")
 
