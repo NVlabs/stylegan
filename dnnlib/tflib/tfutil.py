@@ -222,7 +222,7 @@ def convert_images_from_uint8(images, drange=[-1,1], nhwc_to_nchw=False):
     images = tf.cast(images, tf.float32)
     if nhwc_to_nchw:
         images = tf.transpose(images, [0, 3, 1, 2])
-    return (images - drange[0]) * ((drange[1] - drange[0]) / 255)
+    return ((drange[1] - drange[0]) / 255) * images + drange[0]
 
 
 def convert_images_to_uint8(images, drange=[-1,1], nchw_to_nhwc=False, shrink=1):
