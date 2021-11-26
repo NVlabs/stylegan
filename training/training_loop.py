@@ -20,6 +20,12 @@ from training import dataset
 from training import misc
 from metrics import metric_base
 
+# tf.disable_eager_execution()
+
+# tf_config = tf.ConfigProto()
+# tf_config.gpu_options.allow_growth=True   
+# sess = tf.Session(config=tf_config)
+
 #----------------------------------------------------------------------------
 # Just-in-time processing of training images before feeding them to the networks.
 
